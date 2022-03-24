@@ -7,10 +7,10 @@
 <img src="https://lh3.googleusercontent.com/zogJEgBuNobX_meRfiApMkzDgLKuoGrh970ufoNdizGjkShy-inu4jMQncIyDV3D5utUiMeDiFzZVdXg5AQnWuzxghdhFVcA-0jqYe0" alt="productlist" border="0">
 
 **Add New Product**
-<img src="https://ibb.co/5Tyb094" alt="newproduct" border="0">
+<img src="https://lh3.googleusercontent.com/vDwzm9m_1F3A44pxmKxnqYeCeCcvDyo_ozfNewHD-y7_1eykxckRysdzQdGPKr-IhYvhWNCKmlZ-xkj2oTKoer_29HBuxyKijfni5w" alt="newproduct" border="0">
 
 **Update Existing Products**
-<img src="https://ibb.co/S7bbPxc" alt="update" border="0">
+<img src="https://lh3.googleusercontent.com/OA14KzjkJC9rnp7OxqZfljQsgEDFnpWv-GpiNl9olxctK2Tv19eMTzL-Qv1hTiB2iVRmECC_ceSbAokWgLPq58rANYyICKEwjKOsOg" alt="update" border="0">
 
 <hr />  
 
