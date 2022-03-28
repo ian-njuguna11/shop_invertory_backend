@@ -51,7 +51,7 @@ public class RegistrationService {
         );
 
 //        ping smtp.gmail.com
-        String link = "http://localhost:8080/api/v1/registration/confirm?token=" + token;
+        String link = "http://127.0.0.1:8080/api/v1/auth/confirm?token=" + token;
 
         // Mention the Recipient's email address
         String to = "injuguna@kabarak.ac.ke";
