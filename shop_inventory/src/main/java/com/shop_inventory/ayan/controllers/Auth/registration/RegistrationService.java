@@ -8,13 +8,14 @@ import com.shop_inventory.ayan.model.UserRole;
 import com.shop_inventory.ayan.service.ConfirmationTokenService;
 import com.shop_inventory.ayan.service.UserService;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.time.LocalDateTime;
+import java.util.Properties;
 
 @Service
 @AllArgsConstructor
@@ -49,10 +50,51 @@ public class RegistrationService {
                 )
         );
 
+//        ping smtp.gmail.com
         String link = "http://localhost:8080/api/v1/registration/confirm?token=" + token;
-//        emailSender.send(
-//                request.getEmail(),
-//                buildEmail(request.getFirstName(), link));
+
+        // Mention the Recipient's email address
+        String to = "injuguna@kabarak.ac.ke";
+        // Mention the Sender's email address
+        String from = "njugunaayan@gmail.com";
+        // Mention the SMTP server address. Below Gmail's SMTP server is being used to send email
+        String host = "smtp.gmail.com";
+        // Get system properties
+        Properties properties = System.getProperties();
+        // Setup mail server
+        properties.put("mail.smtp.host", host);
+        properties.put("mail.smtp.port", "465");
+        properties.put("mail.smtp.ssl.enable", "true");
+        properties.put("mail.smtp.auth", "true");
+        // Get the Session object.// and pass username and password
+        Session session = Session.getInstance(properties, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(from, "Ian202595104411");
+            }
+        });
+        // Used to debug SMTP issues
+        session.setDebug(true);
+        try {
+            // Create a default MimeMessage object.
+            MimeMessage message = new MimeMessage(session);
+            // Set From: header field of the header.
+            message.setFrom(new InternetAddress(from));
+            // Set To: header field of the header.
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            // Set Subject: header field
+            message.setSubject("Confirmation token Retailer Shop's Inventory! ");
+
+            String msg = "Welcome to RSI .\nClick the link below to activate your, account \n" + link;
+
+            // Now set the actual message
+            message.setText(msg);
+            System.out.println("sending...");
+            // Send message
+            Transport.send(message);
+            System.out.println("Sent message successfully....");
+        } catch (MessagingException mex) {
+            mex.printStackTrace();
+        }
 
         return token;
 
