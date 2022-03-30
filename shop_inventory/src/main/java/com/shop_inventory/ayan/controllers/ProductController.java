@@ -5,6 +5,7 @@ import com.shop_inventory.ayan.model.Product;
 import com.shop_inventory.ayan.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -40,7 +41,7 @@ public class ProductController {
     @PutMapping("/products/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product productDetails){
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id :" + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not exist with id :" + id));
 
         product.setName(productDetails.getName());
         product.setImage_url(productDetails.getImage_url());
@@ -62,5 +63,24 @@ public class ProductController {
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/makeSale/{id}")
+    public ResponseEntity<Product> makeSale(@PathVariable Long id){
+        Product makeSale = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
+
+        Integer oldQuantity = makeSale.getQuantity();
+
+        oldQuantity--;
+
+        makeSale.setQuantity(oldQuantity);
+
+        Product madeSale = productRepository.save(makeSale);
+
+        // TODO: 3/30/2022 if product is less than 2 in quantity then send sms to remind owner to restock
+
+
+        return ResponseEntity.ok(madeSale);
     }
 }
