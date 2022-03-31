@@ -20,8 +20,8 @@ class ProductService {
         return axios.put(SHOP_API_BASE_URL + '/' + productId, product);
     }
 
-    deleteProduct(employeeId){
-        return axios.delete(SHOP_API_BASE_URL + '/' + employeeId);
+    deleteProduct(productId){
+        return axios.delete(SHOP_API_BASE_URL + '/' + productId);
     }
 }
 

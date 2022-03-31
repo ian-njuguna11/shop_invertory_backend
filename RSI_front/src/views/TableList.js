@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, BrowserRouter, Route, Switch, Redirect} from "react";
 
 
 // reactstrap components
@@ -44,7 +44,7 @@ class RegularTables extends Component {
     }
     
     addProduct(){
-        this.props.history.push('/add-product/_add');
+        this.props.history.push('/admin/add-product/');
     }
     
     componentDidMount(){

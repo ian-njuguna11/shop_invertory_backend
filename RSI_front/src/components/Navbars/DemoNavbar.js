@@ -15,6 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+import PanelHeader from "components/PanelHeader/PanelHeader";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -105,6 +106,7 @@ function DemoNavbar(props) {
   }, [location]);
   return (
     // add or remove classes depending if we are on full-screen-maps page or not
+    
     <Navbar
       color={
         props.location.pathname.indexOf("full-screen-maps") !== -1
@@ -119,7 +121,9 @@ function DemoNavbar(props) {
             (color === "transparent" ? "navbar-transparent " : "")
       }
     >
-      <Container fluid>
+        <PanelHeader xs={12} {...props} />
+        
+      <Container>          
         <div className="navbar-wrapper">
           <div className="navbar-toggle">
             <button

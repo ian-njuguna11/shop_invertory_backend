@@ -21,7 +21,7 @@ public class ProductSeeders implements CommandLineRunner {
         Product product = new Product();
         product.setName("Cooking Oil");
         product.setDescription("Mtungi Raha Cooking Oil");
-        product.setQuantity(20);
+        product.setQuantity(4);
         product.setPrice(300);
         product.setImage_url("https://imgs.search.brave.com/CW-E-6fS4b-LL9cUyFn347RBNYyVGF8HAmUoSVbxSDE/rs:fit:228:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC5T/ZVh1OHFFS0tMYUdZ/bEZhYjNubnpnQUFB/QSZwaWQ9QXBp");
 

@@ -29,9 +29,9 @@ public class MainController {
             // Generate and Save Qr Code Image in static/image folder
             QRCodeGenerator.generateQRCodeImage(productName,250,250,QR_CODE_IMAGE_PATH);
 
-        } catch (WriterException | IOException e) {
-            e.printStackTrace();
-        }
+            } catch (WriterException | IOException e) {
+                e.printStackTrace();
+            }
 
         // Convert Byte Array into Base64 Encode String
         String qrcode = Base64.getEncoder().encodeToString(image);

@@ -6,21 +6,28 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "products")
-public class Product {
+public class Sales {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
-    private String description;
+    private String productName;
     private double quantity;
     private double price;
-    private String image_url;
+    private LocalDateTime createdAt = LocalDateTime.now() ;
+
+    public Sales(String productName, double quantity, double price) {
+        this.productName = productName;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
+
 }

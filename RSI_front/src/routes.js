@@ -25,6 +25,7 @@ import TableList from "views/TableList.js";
 import Maps from "views/Maps.js";
 import Upgrade from "views/Upgrade.js";
 import UserPage from "views/UserPage.js";
+import CreateProduct from "views/CreateProductComponent.js";
 
 var dashRoutes = [
     // SignUp
@@ -56,13 +57,13 @@ var dashRoutes = [
     component: TableList,
     layout: "/admin",
   },
-//   {
-//     path: "/icons",
-//     name: "Icons",
-//     icon: "design_image",
-//     component: Icons,
-//     layout: "/admin",
-//   },
+  {
+    path: "/add-product",
+    name: "Add Products",
+    icon: "business_badge",
+    component: CreateProduct,
+    layout: "/admin",
+  },
 //   {
 //     path: "/maps",
 //     name: "Maps",

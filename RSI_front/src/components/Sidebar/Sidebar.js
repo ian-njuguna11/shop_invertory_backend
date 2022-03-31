@@ -52,7 +52,7 @@ function Sidebar(props) {
           href="https://www.creative-tim.com?ref=nudr-sidebar"
           className="simple-text logo-mini"
           target="_blank"
-        >
+        >   
           <div className="logo-img">
             <img src={logo} alt="business_badge" />
           </div>

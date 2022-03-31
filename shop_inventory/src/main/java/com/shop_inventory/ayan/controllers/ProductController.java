@@ -1,11 +1,16 @@
 package com.shop_inventory.ayan.controllers;
 
+import com.shop_inventory.ayan.QR.QRCodeImpl;
+import com.shop_inventory.ayan.QR.QRCodeRequest;
 import com.shop_inventory.ayan.exceptions.ResourceNotFoundException;
 import com.shop_inventory.ayan.model.Product;
+import com.shop_inventory.ayan.model.Sales;
 import com.shop_inventory.ayan.repository.ProductRepository;
+import com.shop_inventory.ayan.repository.SalesRepository;
+import com.shop_inventory.ayan.sms.SmsRequest;
+import com.shop_inventory.ayan.sms.TwilioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -17,6 +22,18 @@ import java.util.Map;
 @RequestMapping("/api/v1/")
 public class ProductController {
 
+    private TwilioService twilioService;
+    private SmsRequest smsRequest;
+    private final QRCodeImpl qrCodeImpl;
+    private final SalesRepository salesRepository;
+
+    @Autowired
+    public ProductController(TwilioService twilioService, QRCodeImpl qrCodeImpl, SalesRepository salesRepository) {
+        this.twilioService = twilioService;
+        this.qrCodeImpl = qrCodeImpl;
+        this.salesRepository = salesRepository;
+    }
+
     @Autowired
     private ProductRepository productRepository;
 
@@ -27,6 +44,11 @@ public class ProductController {
 
     @PostMapping("/products")
     public Product createProduct(@RequestBody Product product){
+
+        QRCodeRequest qrCodeRequest = new QRCodeRequest(product.getName(), product.getId());
+
+        qrCodeImpl.QRCodeGenerator(qrCodeRequest);
+
         return productRepository.save(product);
     }
 
@@ -66,21 +88,49 @@ public class ProductController {
     }
 
     @PostMapping("/makeSale/{id}")
-    public ResponseEntity<Product> makeSale(@PathVariable Long id){
+    public ResponseEntity<Product> makeSale(@PathVariable Long id,  @RequestBody Product product){
         Product makeSale = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + id));
 
-        Integer oldQuantity = makeSale.getQuantity();
+        double oldQuantity = makeSale.getQuantity();
 
-        oldQuantity--;
+        oldQuantity = oldQuantity - product.getQuantity();
 
         makeSale.setQuantity(oldQuantity);
 
         Product madeSale = productRepository.save(makeSale);
 
-        // TODO: 3/30/2022 if product is less than 2 in quantity then send sms to remind owner to restock
+        var price = (product.getQuantity() * makeSale.getPrice());
 
+        registerSale(makeSale.getName(), product.getQuantity(), price);
+
+        String msg;
+
+        if (oldQuantity != 0){
+            String message = String.format( makeSale.getName() + " is almost out of stoke please restock the product\nIt has remaining quantity of "+ oldQuantity + "\n\nREGARDS RETAILS SHOP INVENTORY ");
+            msg = message;
+        }else {
+            String message = String.format( makeSale.getName() + " is out of stoke please restock the product\nIt has remaining quantity of "+ oldQuantity + "\n\nREGARDS RETAILS SHOP INVENTORY ");
+            msg = message;
+        }
+
+        SmsRequest smsRequest = new SmsRequest("+254724838482",msg);
+
+        // TODO: 3/30/2022 if product is less than 2 in quantity then send sms to remind owner to restock
+        if (oldQuantity<2){
+            sendSms(smsRequest);
+        }
 
         return ResponseEntity.ok(madeSale);
+    }
+
+    public void registerSale(String productName, double quantity, double price){
+        Sales sale = new Sales(productName,quantity,price);
+        salesRepository.save(sale);
+    }
+
+
+    public void sendSms(SmsRequest smsRequest){
+        twilioService.sendSms(smsRequest);
     }
 }
